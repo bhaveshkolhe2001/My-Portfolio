@@ -15,13 +15,16 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  cursor: none;
+}
+@media (pointer: fine) {
+  :root { cursor: none; }
+  a, button { cursor: none; }
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { background: var(--paper); overflow-x: hidden; }
-a { color: inherit; text-decoration: none; cursor: none; }
-button { font: inherit; cursor: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
 img { display: block; max-width: 100%; }
 h1, h2, h3 { letter-spacing: -.065em; }
 h1 em, h2 em { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.06em; font-style: italic; }
@@ -167,10 +170,13 @@ h1 em, h2 em { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.
   position: relative; z-index: 2;
 }
 .availability { display: flex; align-items: center; gap: 9px; }
-.availability i {
-  width: 7px; height: 7px; display: inline-block;
+.avail-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
   border-radius: 50%; background: #708c73;
   box-shadow: 0 0 0 3px rgba(112,140,115,.25);
+  vertical-align: middle;
+  margin-right: 1px;
 }
 
 .hero-grid {

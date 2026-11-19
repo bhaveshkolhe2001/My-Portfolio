@@ -99,7 +99,11 @@ function CustomCursor() {
 
   useEffect(() => {
     const move = (e) => { cursorX.set(e.clientX); cursorY.set(e.clientY); };
-    const over = (e) => { if (e.target.closest("a, button, .project-card")) setHovered(true); };
+    const over = (e) => {
+      if (e.target && typeof e.target.closest === "function" && e.target.closest("a, button, .project-card")) {
+        setHovered(true);
+      }
+    };
     const out = () => setHovered(false);
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseover", over);
@@ -233,7 +237,7 @@ function Hero() {
         <motion.div className="hero-topline"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <span>PORTFOLIO / 2026</span>
-          <span className="availability"><motion.i
+          <span className="availability"><motion.span className="avail-dot"
             animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} /> OPEN TO OPPORTUNITIES</span>
         </motion.div>
 
@@ -303,9 +307,7 @@ function Hero() {
             {/* Floating badge */}
             <motion.div className="floating-badge"
               initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1, type: "spring", stiffness: 300 }}
-              animate2={{ y: [0, -8, 0] }}
-              style={{ animationName: "float", animationDuration: "3s", animationIterationCount: "infinite", animationTimingFunction: "ease-in-out" }}>
+              transition={{ delay: 1, type: "spring", stiffness: 300 }}>
               <span>🇮🇳</span> Pune, India
             </motion.div>
           </motion.div>
@@ -609,10 +611,36 @@ function Contact() {
   );
 }
 
+/* ─── Error Boundary ──────────────────────────── */
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: "60px 7%", fontFamily: "DM Sans, sans-serif" }}>
+          <h2 style={{ fontFamily: "Manrope, sans-serif", letterSpacing: "-.04em" }}>
+            Something went wrong
+          </h2>
+          <p style={{ color: "#777", fontSize: 13, marginTop: 12 }}>
+            {this.state.error?.message}
+          </p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 /* ─── App ─────────────────────────────────────── */
 function App() {
   return (
-    <>
+    <ErrorBoundary>
       <CustomCursor />
       <ScrollProgress />
       <Header />
@@ -624,7 +652,7 @@ function App() {
         <Skills />
       </main>
       <Contact />
-    </>
+    </ErrorBoundary>
   );
 }
 
